@@ -216,3 +216,16 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+# ===========================
+# Project Specific
+# ===========================
+
+# Ignore datasets
+data/raw/*.csv
+data/processed/*.csv
+
+# Ignore trained models
+models/*.pkl
+models/*.joblib
+models/*.h5
+models/*.onnx
