@@ -9,6 +9,7 @@ sys.path.insert(0, str(ROOT_DIR))
 
 from src.predict import predict_transaction
 from src.explain import explain_transaction
+from src.llm import generate_explanation
 
 
 DATA_PATH = ROOT_DIR / "data" / "raw" / "creditcard.csv"
@@ -151,6 +152,10 @@ if st.button(
             transaction,
             top_n=10
         )
+        llm_explanation = generate_explanation(
+            prediction_result,
+            explanation_result
+        )
 
 
         probability = prediction_result[
@@ -286,6 +291,11 @@ if st.button(
         st.bar_chart(
             chart_data
         )
+        st.divider()
+        st.subheader("🤖 AI Explanation")
+        st.write(llm_explanation)
+
+
 
 
         st.divider()
