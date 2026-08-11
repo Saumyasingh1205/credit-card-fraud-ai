@@ -5,6 +5,7 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 import plotly.graph_objects as go
+import json
 
 
 # ============================================================
@@ -294,46 +295,24 @@ DATA_PATH = (
 )
 
 
-@st.cache_data
-def load_dataset():
-    return pd.read_csv(DATA_PATH)
+SAMPLE_DATA_PATH = (
+    ROOT_DIR
+    / "data"
+    / "sample"
+    / "sample_transactions.json"
+)
 
 
 @st.cache_data
 def get_sample_transactions():
 
-    df = load_dataset()
+    with open(SAMPLE_DATA_PATH, "r") as f:
+        samples = json.load(f)
 
-    fraud_rows = df[df["Class"] == 1]
-
-    legitimate_rows = df[df["Class"] == 0]
-
-    if fraud_rows.empty:
-        raise ValueError(
-            "No fraudulent transactions were found in the dataset."
-        )
-
-    if legitimate_rows.empty:
-        raise ValueError(
-            "No legitimate transactions were found in the dataset."
-        )
-
-    fraud = (
-        fraud_rows
-        .iloc[0]
-        .drop(labels=["Class"])
-        .to_dict()
+    return (
+        samples["fraud"],
+        samples["legitimate"]
     )
-
-    legitimate = (
-        legitimate_rows
-        .iloc[0]
-        .drop(labels=["Class"])
-        .to_dict()
-    )
-
-    return fraud, legitimate
-
 
 # ============================================================
 # PIPELINE
