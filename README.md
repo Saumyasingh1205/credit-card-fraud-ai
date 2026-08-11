@@ -279,11 +279,8 @@ pip install -r requirements.txt
 ```bash
 streamlit run app/streamlit_app.py
 ```
-
 ---
-
 # 🗺️ Development Roadmap
-
 - [x] Repository setup
 - [x] Professional project structure
 - [x] Git workflow
@@ -302,11 +299,8 @@ streamlit run app/streamlit_app.py
 - [ ] AI chatbot
 - [ ] Deployment
 - [ ] Documentation
-
 ---
-
 # 🌳 Git Workflow
-
 ```
 main
 │
@@ -324,13 +318,9 @@ main
       ├── feature/10-chatbot
       └── feature/11-deployment
 ```
-
 ---
-
 # 📚 Learning Outcomes
-
 This project demonstrates practical experience in:
-
 - End-to-End Machine Learning
 - Feature Engineering
 - Imbalanced Learning
@@ -340,24 +330,16 @@ This project demonstrates practical experience in:
 - Streamlit Deployment
 - Git Collaboration
 - Software Engineering Best Practices
-
 ---
-
 # 👥 Contributors
-
 | Name | Role |
 |------|------|
 | **Saumya Singh** | Machine Learning Engineer |
 | **Aryaman Srivastava** | Machine Learning Engineer |
-
 ---
-
 # 📄 License
-
 This project is licensed under the MIT License.
-
 ---
-
 # ⭐ Status
 
 🚧 **Currently under active development.**
