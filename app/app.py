@@ -6,6 +6,8 @@ import pandas as pd
 import streamlit as st
 import plotly.graph_objects as go
 import json
+import random
+
 
 
 # ============================================================
@@ -287,14 +289,6 @@ if "error" not in st.session_state:
 # DATASET
 # ============================================================
 
-DATA_PATH = (
-    ROOT_DIR
-    / "data"
-    / "raw"
-    / "creditcard.csv"
-)
-
-
 SAMPLE_DATA_PATH = (
     ROOT_DIR
     / "data"
@@ -304,15 +298,26 @@ SAMPLE_DATA_PATH = (
 
 
 @st.cache_data
-def get_sample_transactions():
+def load_sample_transactions():
 
     with open(SAMPLE_DATA_PATH, "r") as f:
-        samples = json.load(f)
+        return json.load(f)
 
-    return (
-        samples["fraud"],
+
+def get_sample_transactions():
+
+    samples = load_sample_transactions()
+
+    fraud = random.choice(
+        samples["fraud"]
+    )
+
+    legitimate = random.choice(
         samples["legitimate"]
     )
+
+    return fraud, legitimate
+
 
 # ============================================================
 # PIPELINE
@@ -329,7 +334,7 @@ def run_pipeline(transaction):
         top_n=10
     )
 
-    explanation_text = generate_explanation(
+    llm_explanation = generate_explanation(
         prediction_result,
         explanation_result
     )
@@ -337,9 +342,8 @@ def run_pipeline(transaction):
     return (
         prediction_result,
         explanation_result,
-        explanation_text
+        llm_explanation
     )
-
 
 # ============================================================
 # HEADER
