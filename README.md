@@ -48,7 +48,7 @@ The project combines machine learning, model explainability, generative AI, and 
 
 The system follows the pipeline below:
 
-```text
+
 Transaction Input
        │
        ▼
