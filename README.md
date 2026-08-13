@@ -1,194 +1,340 @@
 # 💳 Credit Card Fraud Detection & Explainability
 
-An end-to-end machine learning system for detecting potentially fraudulent credit card transactions and explaining individual predictions using **SHAP** and a **Groq-powered LLM**.
+An end-to-end machine learning application for detecting potentially fraudulent credit card transactions and explaining individual predictions using **SHAP** and a **Groq-powered LLM**.
 
-The project combines machine learning, model explainability, generative AI, and Streamlit deployment into a single interactive application.
+The project combines **machine learning, model explainability, generative AI, and Streamlit deployment** into a single interactive application.
 
-🔗 **Live Demo:** https://credit-card-fraud-ai.streamlit.app/  
-🔗 **GitHub:** https://github.com/Saumyasingh1205/credit-card-fraud-ai
+### 🔗 Links
 
----
-
-## 🚀 Features
-
-- 🔍 **Fraud Detection**
-  - Predicts whether a transaction is fraudulent or legitimate.
-  - Uses trained machine learning models including Logistic Regression and Random Forest.
-
-- 🌲 **Random Forest Prediction**
-  - Uses the final Random Forest model for transaction classification.
-  - Applies a configurable classification threshold to determine the final label.
-
-- 📊 **SHAP Explainability**
-  - Identifies the features that contributed most strongly to an individual prediction.
-  - Shows whether each feature increased or decreased the model's fraud probability.
-  - Provides both tabular and visual feature contributions.
-
-- 🤖 **LLM-Powered Explanations**
-  - Uses the Groq API with an OpenAI-compatible interface.
-  - Converts SHAP contributions into concise, human-readable explanations.
-  - The LLM explains the model's prediction and does not independently detect fraud.
-
-- 🎲 **Sample Transactions**
-  - Includes multiple predefined fraudulent and legitimate transactions.
-  - Transactions are randomly selected from the sample set for demonstration.
-
-- ✍️ **Manual Transaction Input**
-  - Allows users to enter transaction features manually and analyze the resulting prediction.
-
-- 🎨 **Interactive Streamlit Interface**
-  - Displays prediction probability, classification threshold, SHAP contributions, charts, and AI-generated explanations in one interface.
-
-- ☁️ **Cloud Deployment**
-  - Deployed using Streamlit Cloud for public access.
+* 🚀 **Live Demo:** https://credit-card-fraud-ai.streamlit.app/
+* 💻 **GitHub:** https://github.com/Saumyasingh1205/credit-card-fraud-ai
 
 ---
 
-## 🧠 How It Works
+## ✨ Features
 
-The system follows the pipeline below:
+### 🔍 Fraud Detection
 
+* Predicts whether a credit card transaction is **fraudulent or legitimate**.
+* Supports **Logistic Regression** and **Random Forest** during model development.
+* Uses the final **Random Forest model** for application-level predictions.
+* Applies a configurable classification threshold to determine the final prediction.
 
-Transaction Input
-       │
-       ▼
-Data Preparation
-       │
-       ▼
-Random Forest Model
-       │
-       ├──────────────► Fraud Probability
-       │
-       ▼
-Classification Threshold
-       │
-       ▼
-Fraud / Legitimate Prediction
-       │
-       ▼
-SHAP Explainability
-       │
-       ▼
-Top Feature Contributions
-       │
-       ▼
-Groq LLM
-       │
-       ▼
-Human-Readable Explanation
+### 🌲 Random Forest Prediction
 
-The machine learning model is responsible for the actual prediction.
+The deployed application uses the trained Random Forest model to calculate the probability that a transaction is fraudulent.
 
-SHAP is used to explain the contribution of individual features, while the LLM converts those technical contributions into a simpler explanation for the user.
+The final classification is determined using the configured threshold:
 
-📊 Dataset
+```text
+Fraud Probability >= Threshold → Fraudulent
+Fraud Probability < Threshold  → Legitimate
+```
 
-The project uses the Credit Card Fraud Detection dataset containing anonymized transaction features.
+### 📊 SHAP Explainability
 
-The dataset contains:
+SHAP is used to explain individual Random Forest predictions.
 
-Time — Time elapsed since the first transaction
-V1–V28 — Anonymized PCA-transformed features
-Amount — Transaction amount
-Class — Target variable
-0 → Legitimate
-1 → Fraudulent
+For each transaction, the application identifies the features that contributed most strongly to the prediction and shows whether each feature pushed the model toward or away from fraud.
 
-The V1–V28 features are anonymized PCA components. Their real-world meanings are not assumed or inferred by the application.
+The interface provides:
 
-The original dataset is used for model development and evaluation, while a separate sample transaction JSON file is used by the deployed application for demonstration transactions.
+* Feature name
+* Feature value
+* SHAP contribution
+* Direction of influence
+* SHAP contribution visualization
 
-🔬 Explainability with SHAP
+This makes the model's decision more transparent than providing only a prediction label.
 
-The application uses SHAP to explain individual Random Forest predictions.
+### 🤖 LLM-Powered Explanations
 
-For each transaction, the system identifies the features with the strongest contributions.
+The project uses a **Groq-hosted LLM** through an OpenAI-compatible API to convert SHAP results into a concise, human-readable explanation.
 
-Positive SHAP value → pushes the prediction toward fraud
-Negative SHAP value → pushes the prediction away from fraud
+The LLM receives information such as:
 
-The application displays:
+* Random Forest prediction
+* Fraud probability
+* Classification threshold
+* Important SHAP contributions
 
-Feature name
-Feature value
-SHAP contribution
-Direction of influence
-SHAP contribution chart
+The LLM then explains the model's decision in natural language.
 
-This makes the model's decision more transparent instead of providing only a final prediction.
+> **Important:** The LLM does **not** detect fraud.
+> The Random Forest model is solely responsible for the prediction.
 
-🤖 LLM Explanation Layer
+### 🎲 Sample Transactions
 
-The project integrates a Groq-hosted LLM through an OpenAI-compatible API.
+The application includes predefined sample transactions for demonstration.
 
-The LLM receives:
+Users can:
 
-Random Forest prediction
-Fraud probability
-Classification threshold
-Important SHAP feature contributions
+* Analyze a sample fraudulent transaction
+* Analyze a sample legitimate transaction
+* Explore different randomly selected examples
 
-It then generates a short explanation in natural language.
+This allows users to try the application without manually entering all transaction features.
 
-Important Design Principle
+### ✍️ Manual Transaction Input
 
-The LLM does not make the fraud prediction.
+Users can manually enter:
 
-The architecture is:
+* `Time`
+* `Amount`
+* `V1`–`V28`
 
+The transaction is then passed through the complete prediction and explainability pipeline.
+
+### 🎨 Interactive Streamlit Interface
+
+The application brings the complete workflow into one interface, including:
+
+* Transaction input
+* Fraud probability
+* Classification threshold
+* Prediction result
+* SHAP feature contributions
+* SHAP visualization
+* AI-generated explanation
+
+### ☁️ Cloud Deployment
+
+The application is publicly deployed using **Streamlit Cloud**.
+
+---
+
+## 🧠 System Architecture
+
+The overall prediction and explanation pipeline is:
+
+```text
+                    Transaction Input
+                           │
+                           ▼
+                  Data Preparation
+                           │
+                           ▼
+                  Random Forest Model
+                           │
+                ┌──────────┴──────────┐
+                ▼                     ▼
+       Fraud Probability        Model Prediction
+                │                     │
+                └──────────┬──────────┘
+                           ▼
+                Classification Threshold
+                           │
+                           ▼
+                 Fraud / Legitimate
+                           │
+                           ▼
+                    SHAP Explainer
+                           │
+                           ▼
+               Feature Contributions
+                           │
+                           ▼
+                      Groq LLM
+                           │
+                           ▼
+               Human-Readable Explanation
+```
+
+### Design Principle
+
+The project intentionally separates **prediction** from **explanation**:
+
+```text
 Random Forest
       │
-      │ prediction
+      │ Prediction
       ▼
+    SHAP
+      │
+      │ Feature Contributions
+      ▼
+  Groq LLM
+      │
+      │ Natural-Language Explanation
+      ▼
+    User
+```
+
+This ensures that the generative AI layer explains the machine learning model's decision rather than independently making the fraud classification.
+
+---
+
+## 📊 Dataset
+
+The project uses the **Credit Card Fraud Detection** dataset containing anonymized transaction features.
+
+### Features
+
+| Feature    | Description                              |
+| ---------- | ---------------------------------------- |
+| `Time`     | Time elapsed since the first transaction |
+| `V1`–`V28` | Anonymized PCA-transformed features      |
+| `Amount`   | Transaction amount                       |
+| `Class`    | Target variable                          |
+
+### Target Variable
+
+```text
+0 → Legitimate
+1 → Fraudulent
+```
+
+The `V1`–`V28` features are anonymized PCA components. Their real-world meanings are **not assumed or inferred** by the application.
+
+The original dataset is used for model development and evaluation.
+
+For the deployed application, a separate JSON file containing representative sample transactions is used to provide convenient demonstration inputs.
+
+---
+
+## 🔬 Explainability with SHAP
+
+The application uses **SHAP (SHapley Additive exPlanations)** to interpret individual Random Forest predictions.
+
+For a given transaction:
+
+* **Positive SHAP value** → pushes the prediction toward fraud
+* **Negative SHAP value** → pushes the prediction away from fraud
+
+The application identifies the most influential features and presents their contributions visually.
+
+Example interpretation:
+
+```text
+Feature      SHAP Value       Influence
+-----------------------------------------
+V14          +0.31            Toward fraud
+V4           +0.18            Toward fraud
+Amount       -0.09            Away from fraud
+V12          -0.07            Away from fraud
+```
+
+The exact contribution values depend on the transaction being analyzed.
+
+---
+
+## 🤖 LLM Explanation Layer
+
+The LLM acts as an **explanation layer**, not a prediction layer.
+
+### Input to the LLM
+
+The explanation module receives:
+
+```text
+Random Forest Prediction
+Fraud Probability
+Classification Threshold
+Important SHAP Contributions
+```
+
+### Output
+
+The LLM converts these technical model outputs into a short natural-language explanation that is easier for a user to understand.
+
+### Why this architecture?
+
+Separating the prediction and explanation responsibilities provides a clearer architecture:
+
+```text
+Machine Learning Model
+        ↓
+Actual Prediction
+        ↓
 SHAP
-      │
-      │ feature contributions
-      ▼
-Groq LLM
-      │
-      │ explanation
-      ▼
-User
+        ↓
+Feature-Level Evidence
+        ↓
+LLM
+        ↓
+Human-Readable Explanation
+```
 
-This keeps the ML prediction separate from the natural-language explanation layer.
+The LLM therefore does not replace the fraud detection model.
 
-🖥️ Application
+---
 
-The Streamlit application provides three transaction input options.
+## 🖥️ Application Workflow
 
-1. Manual Transaction
+The Streamlit application supports three ways to analyze a transaction.
 
-Users can enter:
+### 1. Manual Transaction
 
+Users enter the transaction features manually:
+
+```text
 Time
 Amount
-V1–V28 feature values
+V1
+V2
+...
+V28
+```
 
-The transaction is then passed through the prediction and explainability pipeline.
+The transaction is then passed through the complete ML and explainability pipeline.
 
-2. Sample Fraud Transaction
+### 2. Sample Fraud Transaction
 
-The application randomly selects a predefined fraudulent transaction from the sample transaction dataset.
+The application randomly selects a predefined fraudulent transaction from the sample dataset.
 
-3. Sample Legitimate Transaction
+### 3. Sample Legitimate Transaction
 
-The application randomly selects a predefined legitimate transaction from the sample transaction dataset.
+The application randomly selects a predefined legitimate transaction from the sample dataset.
 
-The sample transactions allow users to explore the application without manually entering all 30 features.
+Sample transactions make it easy to explore the application without manually entering all 30 features.
 
-🛠️ Tech Stack
-Category	Technologies
-Language	Python
-Data Processing	Pandas, NumPy
-Machine Learning	Scikit-learn
-Models	Logistic Regression, Random Forest
-Explainability	SHAP
-Generative AI	Groq API
-Frontend / Application	Streamlit
-Visualization	Plotly
-Version Control	Git, GitHub
-Deployment	Streamlit Cloud
-📁 Project Structure
+---
+
+## 📈 Prediction Output
+
+For every analyzed transaction, the application displays:
+
+* **Prediction label**
+* **Fraud probability**
+* **Classification threshold**
+* **SHAP feature contributions**
+* **SHAP visualization**
+* **AI-generated explanation**
+
+Example:
+
+```text
+Prediction: Legitimate
+Fraud Probability: 0%
+Threshold: 0.35
+```
+
+The final classification is determined by the Random Forest model and the configured threshold.
+
+> **Note:** A model probability should not automatically be interpreted as a calibrated real-world probability of fraud. Proper probability calibration and domain-specific validation would be required for production use.
+
+---
+
+## 🛠️ Tech Stack
+
+| Category             | Technologies                       |
+| -------------------- | ---------------------------------- |
+| **Language**         | Python                             |
+| **Data Processing**  | Pandas, NumPy                      |
+| **Machine Learning** | Scikit-learn                       |
+| **Models**           | Logistic Regression, Random Forest |
+| **Explainability**   | SHAP                               |
+| **Generative AI**    | Groq API                           |
+| **Application**      | Streamlit                          |
+| **Visualization**    | Plotly                             |
+| **Version Control**  | Git, GitHub                        |
+| **Deployment**       | Streamlit Cloud                    |
+
+---
+
+## 📁 Project Structure
+
+```text
 credit-card-fraud-ai/
 │
 ├── app/
@@ -197,6 +343,7 @@ credit-card-fraud-ai/
 ├── data/
 │   ├── raw/
 │   │   └── creditcard.csv
+│   │
 │   └── sample/
 │       └── sample_transactions.json
 │
@@ -218,135 +365,183 @@ credit-card-fraud-ai/
 ├── requirements.txt
 ├── README.md
 └── .gitignore
-⚙️ Local Setup
-1. Clone the repository
+```
+
+---
+
+## ⚙️ Local Setup
+
+### 1. Clone the Repository
+
+```bash
 git clone https://github.com/Saumyasingh1205/credit-card-fraud-ai.git
 cd credit-card-fraud-ai
-2. Create a virtual environment
+```
+
+### 2. Create a Virtual Environment
+
+```bash
 python -m venv venv
-3. Activate the virtual environment
-Windows PowerShell
+```
+
+### 3. Activate the Virtual Environment
+
+**Windows PowerShell:**
+
+```powershell
 .\venv\Scripts\activate
-macOS / Linux
+```
+
+**macOS / Linux:**
+
+```bash
 source venv/bin/activate
-4. Install dependencies
+```
+
+### 4. Install Dependencies
+
+```bash
 pip install -r requirements.txt
-5. Configure the Groq API key
+```
+
+### 5. Configure the Groq API Key
 
 The LLM explanation module requires a Groq API key.
 
-For local Streamlit execution, create:
+Create the following file:
 
+```text
 .streamlit/secrets.toml
+```
 
-and add:
+Add:
 
+```toml
 GROQ_API_KEY = "your_groq_api_key"
+```
 
-Do not commit your API key to GitHub.
+> **Security:** Never commit your API key to GitHub.
 
-▶️ Run the Application
+---
+
+## ▶️ Run the Application
 
 From the project root:
 
+```bash
 python -m streamlit run app/app.py
+```
 
 The application will open in your browser.
 
-🔐 Environment & Secrets
+---
 
-The project uses Streamlit secrets for API credentials.
+## 🔐 Environment & Secrets
+
+The project uses **Streamlit secrets** for API credentials.
 
 Required secret:
 
+```text
 GROQ_API_KEY
+```
 
-For cloud deployment, the API key should be configured through the deployment platform's secrets management instead of being stored in the repository.
+For Streamlit Cloud deployment, configure the API key through the platform's **Secrets** settings rather than storing it inside the repository.
 
-📈 Prediction Output
+---
 
-For every analyzed transaction, the application displays:
-
-Prediction label
-Fraud probability
-Classification threshold
-SHAP feature contributions
-SHAP visualization
-AI-generated explanation
-
-Example:
-
-Prediction: Legitimate
-Fraud Probability: 0%
-Threshold: 0.35
-
-The final classification is determined by the Random Forest model and configured threshold.
-
-🧪 Testing
+## 🧪 Testing
 
 The project includes testing for the LLM explanation module.
 
-Run the test module using:
+Run:
 
+```bash
 python tests/test_llm.py
+```
 
-The application can also be tested manually through the Streamlit interface using both sample transaction types and manually entered transactions.
+The application can also be tested manually through the Streamlit interface using:
 
-🌐 Deployment
+* Sample fraud transactions
+* Sample legitimate transactions
+* Manual transaction inputs
 
-The application is deployed using Streamlit Cloud.
+---
 
-Updates pushed to the configured GitHub branch can trigger a new deployment.
+## 🌐 Deployment
 
-Live Application
+The application is deployed using **Streamlit Cloud**.
 
-👉 https://credit-card-fraud-ai.streamlit.app/
+### Live Application
 
-🔮 Future Improvements
+🚀 **https://credit-card-fraud-ai.streamlit.app/**
 
-Potential future improvements include:
+Changes pushed to the configured GitHub branch can trigger a new deployment.
 
-Improve the manual transaction input experience
-Add automatic validation for transaction feature values
-Add more representative sample transactions
-Improve model calibration and probability interpretation
-Add additional model comparison visualizations
-Expand automated testing
-Improve monitoring and logging
-Add richer interactive SHAP visualizations
-Improve the UI/UX based on user feedback
-👥 Collaboration
+---
 
-This project was developed collaboratively using Git and GitHub.
+## 🔮 Future Improvements
 
-The repository uses feature-based development and Git branches to organize different parts of the machine learning and application pipeline.
+Potential improvements include:
 
-Major areas of development include:
+* Improve the manual transaction input experience
+* Add automatic validation for transaction feature values
+* Add more representative sample transactions
+* Improve model calibration and probability interpretation
+* Add additional model comparison visualizations
+* Expand automated test coverage
+* Improve application monitoring and logging
+* Add richer interactive SHAP visualizations
+* Improve UI/UX based on user feedback
 
-Data analysis and preprocessing
-Machine learning models
-Random Forest pipeline
-Model evaluation
-SHAP explainability
-LLM-based explanations
-Streamlit application
-Deployment
+---
 
 ## 👥 Contributors
 
-- **Aryamann Srivastava** — [GitHub](https://github.com/Aryamann687)
-- **Saumya Singh** — [GitHub](https://github.com/Saumyasingh1205)
+This project was developed collaboratively using Git and GitHub with feature-based development and Git branches.
 
-This project was developed collaboratively using Git and GitHub.
+### Aryamann Srivastava
 
-⚠️ Disclaimer
+[GitHub](https://github.com/Aryamann687)
 
-This project is intended for educational and demonstration purposes.
+### Saumya Singh
 
-It should not be used as a production financial fraud detection system without additional validation, security controls, monitoring, model calibration, and domain-specific evaluation.
+[GitHub](https://github.com/Saumyasingh1205)
 
-The anonymized dataset features (V1–V28) do not have publicly interpretable real-world meanings.
+### Areas of Contribution
 
-📄 License
+The project covers collaborative work across:
 
-This project is intended for educational and portfolio purposes.
+* Data analysis and preprocessing
+* Machine learning models
+* Random Forest pipeline
+* Model evaluation
+* SHAP explainability
+* LLM-based explanations
+* Streamlit application
+* Deployment
+
+---
+
+## ⚠️ Disclaimer
+
+This project is intended for **educational and demonstration purposes**.
+
+It should **not** be used as a production financial fraud detection system without additional:
+
+* Model validation
+* Probability calibration
+* Security controls
+* Monitoring
+* Data validation
+* Domain-specific evaluation
+* Regulatory and compliance considerations
+
+The anonymized `V1`–`V28` features do not have publicly interpretable real-world meanings.
+
+---
+
+## 📄 License
+
+This project is intended for **educational and portfolio purposes**.
+
